@@ -84,7 +84,7 @@
     border-width: 1px;
     border-style: solid;
     border-radius: 100px;
-    border-color: @border-color-base;
+    border-color: #3b99da;
     background-color: @radio-button-bg;
     transition: all @radio-duration;
   }
@@ -217,9 +217,9 @@ span.@{radio-prefix-cls} + * {
   }
 
   &-checked {
-    background: @radio-button-bg;
+    background: @primary-color;
     border-color: @radio-dot-color;
-    color: @radio-dot-color;
+    color: #fff;
     box-shadow: -1px 0 0 0 @radio-dot-color;
     z-index: 1;
     &::before {
@@ -234,13 +234,13 @@ span.@{radio-prefix-cls} + * {
     &:hover {
       border-color: @radio-button-hover-color;
       box-shadow: -1px 0 0 0 @radio-button-hover-color;
-      color: @radio-button-hover-color;
+      color: #fff;
     }
 
     &:active {
       border-color: @radio-button-active-color;
       box-shadow: -1px 0 0 0 @radio-button-active-color;
-      color: @radio-button-active-color;
+      color: #fff;
     }
   }
 
