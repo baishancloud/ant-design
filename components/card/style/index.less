@@ -26,7 +26,7 @@
 
   &-head {
     background: @card-head-background;
-    border-bottom: @border-width-base @border-style-base @border-color-split;
+    border: @border-width-base @border-style-base @card-bead-border-color;
     padding: 0 @card-padding-base;
     border-radius: @border-radius-sm @border-radius-sm 0 0;
     .clearfix;
@@ -54,7 +54,7 @@
       clear: both;
 
       &-bar {
-        border-bottom: @border-width-base @border-style-base @border-color-split;
+        border-bottom: @border-width-base @border-style-base @card-bead-border-color;
       }
     }
   }
@@ -171,7 +171,7 @@
 
   &-type-inner &-head {
     padding: 0 @card-padding-base;
-    background: @background-color-light;
+    background: @card-head-background;
 
     &-title {
       padding: @card-inner-head-padding 0;
