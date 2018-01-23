@@ -37,9 +37,10 @@
 @font-family-no-number  : "Chinese Quote", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
 @font-family            : "Monospace Number", @font-family-no-number;
 @code-family            : Consolas, Menlo, Courier, monospace;
-@heading-color          : fade(#000, 85%);
+@heading-color          : #475669;
 @text-color             : #475669;
-@text-color-secondary   : #20a0ff;
+@text-color-secondary   : fade(#000, 45%);
+@text-color-blue        : #20a0ff;
 @heading-color-dark     : fade(#fff, 100%);
 @text-color-dark        : fade(#fff,85%);
 @text-color-secondary-dark: #a1acb5;
@@ -101,8 +102,8 @@
 @outline-width          : 2px;
 @outline-color          : @primary-color;
 
-@background-color-light : hsv(0, 0, 98%);  // background of header and selected item
-@background-color-base  : hsv(0, 0, 96%);  // Default grey background color
+@background-color-light : #f6f8f8;  // background of header and selected item
+@background-color-base  : #f6f8f8;  // Default grey background color
 
 // Disabled states
 @disabled-color         : #c4cad2;
@@ -323,7 +324,7 @@
 @table-header-bg: @background-color-light;
 @table-header-sort-bg: @background-color-base;
 @table-row-hover-bg: @primary-1;
-@table-selected-row-bg: #fafafa;
+@table-selected-row-bg: #fff;
 @table-padding-vertical: 16px;
 @table-padding-horizontal: 16px;
 
@@ -360,7 +361,7 @@
 // Card
 // ---
 @card-head-color: @heading-color;
-@card-bead-border-color: #dee5e7;
+@card-head-border-color: #dee5e7;
 @card-head-background: #f6f8f8;
 @card-head-padding: 16px;
 @card-inner-head-padding: 12px;

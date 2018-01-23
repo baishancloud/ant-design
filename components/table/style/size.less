@@ -21,7 +21,7 @@
 }
 
 .@{table-prefix-cls}-small {
-  border: @border-width-base @border-style-base @border-color-split;
+  border: none;
   border-radius: @border-radius-base;
 
   > .@{table-prefix-cls}-title,
@@ -68,8 +68,7 @@
       background: @component-background;
     }
 
-    .@{table-prefix-cls}-placeholder,
-    .@{table-prefix-cls}-row:last-child td {
+    .@{table-prefix-cls}-placeholder {
       border-bottom: 0;
     }
   }
