@@ -39,15 +39,15 @@ Open browser at http://localhost:3000/, it renders a header saying "Welcome to R
 $ yarn add antd
 ```
 
-Modify `src/App.js`, import Button component from `antd`.
+Modify `src/App.tsx`, import Button component from `antd`.
 
 ```jsx
+import { Button } from 'antd';
 import * as React from 'react';
-import Button from 'antd/lib/button';
 import './App.css';
 
 class App extends React.Component {
-  render() {
+  public render() {
     return (
       <div className="App">
         <Button type="primary">Button</Button>
@@ -133,8 +133,8 @@ module.exports = function override(config, env) {
   tsLoader.options = {
     getCustomTransformers: () => ({
       before: [ tsImportPluginFactory({
-        libraryName: 'antd',
         libraryDirectory: 'es',
+        libraryName: 'antd',
         style: 'css',
       }) ]
     })
@@ -212,6 +212,11 @@ We use `modifyVars` option of [less-loader](https://github.com/webpack/less-load
 ## Alternative way
 
 You can also follow instructions in [Use in create-react-app](/docs/react/use-with-create-react-app.en-US.md), then use [react-app-rewire-typescript][https://github.com/lwd-technology/react-app-rewire-typescript] to setup the TypeScript development environment by yourself.
+
+And you can use [react-scripts-ts-antd](https://www.npmjs.com/package/react-scripts-ts-antd) which includes ts-import-plugin, react-app-rewired, scss, less and etc.You can create a new project that without any configurations by running just one command.
+```bash
+$ create-react-app my-project --scripts-version=react-scripts-ts-antd
+```
 
 ## FAQ
 

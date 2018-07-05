@@ -10,13 +10,16 @@
 
 .@{table-prefix-cls} {
   .reset-component;
-  overflow: hidden;
   position: relative;
-  border-radius: @border-radius-base @border-radius-base 0 0;
+  clear: both;
 
   &-body {
     transition: opacity .3s;
     background-color: @component-background;
+  }
+
+  &-empty &-body {
+    overflow: auto !important;
   }
 
   table {
@@ -25,7 +28,6 @@
     border-spacing: 0;
     text-align: left;
     border-radius: @border-radius-base @border-radius-base 0 0;
-    overflow: hidden;
   }
 
   &-thead > tr > th {
@@ -38,7 +40,6 @@
 
     &[colspan] {
       text-align: center;
-      border-bottom: 0;
     }
 
     .@{iconfont-css-prefix}-filter,
@@ -64,6 +65,27 @@
 
     .@{table-prefix-cls}-filter-selected.@{iconfont-css-prefix}-filter {
       color: @primary-color;
+    }
+
+    // https://github.com/ant-design/ant-design/issues/8979
+    &.@{table-prefix-cls}-column-has-filters {
+      overflow: hidden;
+    }
+  }
+
+  &-thead > tr:first-child > th {
+    &:first-child {
+      border-top-left-radius: @border-radius-base;
+    }
+
+    &:last-child {
+      border-top-right-radius: @border-radius-base;
+    }
+  }
+
+  &-thead > tr:not(:last-child) > th {
+    &[colspan] {
+      border-bottom: 0;
     }
   }
 
@@ -127,7 +149,8 @@
     overflow: hidden;
     .@{table-prefix-cls}-bordered & {
       &,
-      table {
+      table,
+      .@{table-prefix-cls}-thead > tr:first-child > th {
         border-radius: 0;
       }
     }
@@ -150,7 +173,7 @@
   &-thead > tr > th,
   &-tbody > tr > td {
     padding: @table-padding-vertical @table-padding-horizontal;
-    word-break: break-all;
+    word-break: break-word;
   }
 
   &-thead > tr > th.@{table-prefix-cls}-selection-column-custom {
@@ -211,7 +234,7 @@
     margin-left: 8px;
     display: inline-block;
     width: 14px;
-    height: 14px;
+    height: @font-size-base;
     vertical-align: middle;
     text-align: center;
     font-weight: normal;
@@ -219,11 +242,12 @@
 
     &-up,
     &-down {
-      line-height: 6px;
       display: block;
       width: 14px;
-      height: 6px;
+      height: @font-size-base / 2 - 1px;
+      line-height: @font-size-base / 2 - 1px;
       cursor: pointer;
+      position: relative;
       &:hover .@{iconfont-css-prefix} {
         color: @table-header-icon-color;
       }
@@ -244,11 +268,11 @@
     }
 
     &-up:after {
-      top: -30px;
+      bottom: 0;
     }
 
     &-down:after {
-      bottom: -30px;
+      top: 0;
     }
 
     .@{iconfont-css-prefix}-caret-up,
@@ -257,6 +281,16 @@
       line-height: 4px;
       height: 4px;
       transition: all .3s;
+      position: relative;
+      display: block;
+    }
+
+    &-down {
+      margin-top: 1.5px;
+    }
+
+    .@{iconfont-css-prefix}-caret-up {
+      margin-top: 0.5px;
     }
   }
 
@@ -297,7 +331,7 @@
       }
     }
 
-    .@{table-prefix-cls}-thead > tr > th {
+    .@{table-prefix-cls}-thead > tr:not(:last-child) > th {
       border-bottom: @border-width-base @border-style-base @border-color-split;
     }
 
@@ -464,7 +498,7 @@
   tr&-expanded-row {
     &,
     &:hover {
-      background: #fbfbfb;
+      background: @table-expanded-row-bg;
     }
   }
 
@@ -536,6 +570,9 @@
     table {
       border-radius: @border-radius-base 0 0 0;
     }
+    .ant-table-thead > tr > th:last-child {
+      border-top-right-radius: 0;
+    }
   }
 
   &-fixed-right {
@@ -550,6 +587,9 @@
     .@{table-prefix-cls}-expanded-row {
       color: transparent;
       pointer-events: none;
+    }
+    .ant-table-thead > tr > th:first-child {
+      border-top-left-radius: 0;
     }
   }
 

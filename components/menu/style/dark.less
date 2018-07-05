@@ -2,7 +2,7 @@
   // dark theme
   &-dark,
   &-dark &-sub {
-    color: @text-color-secondary-dark;
+    color: @menu-dark-color;
     background: @menu-dark-bg;
     .@{menu-prefix-cls}-submenu-title .@{menu-prefix-cls}-submenu-arrow {
       opacity: .45;
@@ -33,10 +33,14 @@
     border-bottom: 0;
   }
 
+  &-dark&-horizontal > &-item > a:before {
+    bottom: 0;
+  }
+
   &-dark &-item,
   &-dark &-item-group-title,
   &-dark &-item > a {
-    color: @text-color-secondary-dark;
+    color: @menu-dark-color;
   }
 
   &-dark&-inline,
@@ -73,9 +77,9 @@
       color: #1d8ce0;
     }
     background-color: transparent;
-    color: #fff;
+    color: @menu-dark-highlight-color;
     > a {
-      color: #fff;
+      color: @menu-dark-highlight-color;
     }
     > .@{menu-prefix-cls}-submenu-title,
     > .@{menu-prefix-cls}-submenu-title:hover {
@@ -83,7 +87,7 @@
         opacity: 1;
         &:after,
         &:before {
-          background: #fff;
+          background: @menu-dark-highlight-color;
         }
       }
     }
@@ -94,13 +98,13 @@
       color: #1d8ce0;
     }
     border-right: 0;
-    color: #fff;
+    color: @menu-dark-highlight-color;
     &:after {
       border-right: 0;
     }
     > a,
     > a:hover {
-      color: #fff;
+      color: @menu-dark-highlight-color;
     }
   }
 
@@ -123,6 +127,12 @@
     }
     > .@{menu-prefix-cls}-submenu-title {
       color: @disabled-color-dark !important;
+      > .@{menu-prefix-cls}-submenu-arrow {
+        &:before,
+        &:after {
+          background: @disabled-color-dark !important;
+        }
+      }
     }
   }
 }

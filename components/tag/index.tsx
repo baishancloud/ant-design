@@ -8,7 +8,7 @@ import CheckableTag from './CheckableTag';
 
 export { CheckableTagProps } from './CheckableTag';
 
-export interface TagProps {
+export interface TagProps extends React.HTMLAttributes<HTMLDivElement> {
   prefixCls?: string;
   className?: string;
   color?: string;
@@ -106,7 +106,7 @@ export default class Tag extends React.Component<TagProps, TagState> {
         className={classString}
         style={tagStyle}
       >
-        <span className={`${prefixCls}-text`}>{children}</span>
+        {children}
         {closeIcon}
       </div>
     );

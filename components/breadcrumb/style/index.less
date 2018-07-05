@@ -8,19 +8,19 @@
   color: @text-color-blue;
 
   .@{iconfont-css-prefix} {
-    font-size: @font-size-sm;
+    font-size: @breadcrumb-icon-font-size;
   }
 
   a {
     color: @text-color-blue;
     transition: color .3s;
     &:hover {
-      color: @primary-5;
+      color: @breadcrumb-link-color-hover;
     }
   }
 
   & > span:last-child {
-    color: @text-color;
+    color: @breadcrumb-last-item-color;
   }
 
   & > span:last-child &-separator {
@@ -28,8 +28,8 @@
   }
 
   &-separator {
-    margin: 0 @padding-xs;
-    color: @text-color-secondary;
+    margin: @breadcrumb-separator-margin;
+    color: @breadcrumb-separator-color;
   }
 
   &-link {

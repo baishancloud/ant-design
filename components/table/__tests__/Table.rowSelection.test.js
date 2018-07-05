@@ -1,6 +1,7 @@
 import React from 'react';
 import { mount, render } from 'enzyme';
 import Table from '..';
+import Checkbox from '../../checkbox';
 
 describe('Table.rowSelection', () => {
   const columns = [{
@@ -77,6 +78,7 @@ describe('Table.rowSelection', () => {
     const rowSelection = {
       getCheckboxProps: record => ({
         disabled: record.name === 'Lucy',
+        name: record.name,
       }),
     };
 
@@ -84,7 +86,9 @@ describe('Table.rowSelection', () => {
     const checkboxes = wrapper.find('input');
 
     expect(checkboxes.at(1).props().disabled).toBe(false);
+    expect(checkboxes.at(1).props().name).toEqual(data[0].name);
     expect(checkboxes.at(2).props().disabled).toBe(true);
+    expect(checkboxes.at(2).props().name).toEqual(data[1].name);
   });
 
   it('works with pagination', () => {
@@ -151,11 +155,11 @@ describe('Table.rowSelection', () => {
     wrapper.find('input').last().simulate('change', { target: { checked: true } });
 
     expect(handleChange).toBeCalledWith([3], [{ key: 3, name: 'Jerry' }]);
-    expect(handleSelect).toBeCalledWith(
-      { key: 3, name: 'Jerry' },
-      true,
-      [{ key: 3, name: 'Jerry' }]
-    );
+    expect(handleSelect.mock.calls.length).toBe(1);
+    expect(handleSelect.mock.calls[0][0]).toEqual({ key: 3, name: 'Jerry' });
+    expect(handleSelect.mock.calls[0][1]).toEqual(true);
+    expect(handleSelect.mock.calls[0][2]).toEqual([{ key: 3, name: 'Jerry' }]);
+    expect(handleSelect.mock.calls[0][3].type).toBe('change');
   });
 
   it('fires selectAll event', () => {
@@ -296,6 +300,36 @@ describe('Table.rowSelection', () => {
     });
   });
 
+  // https://github.com/ant-design/ant-design/issues/4245
+  it('should allow dynamic getCheckboxProps', () => {
+    class App extends React.Component {
+      state = {
+        disableName: 'Jack',
+      };
+
+      render() {
+        const { disableName } = this.state;
+        return (
+          <Table
+            columns={columns}
+            dataSource={data}
+            rowSelection={{
+              getCheckboxProps: record => ({ disabled: record.name === disableName }),
+            }}
+          />
+        );
+      }
+    }
+    const wrapper = mount(<App />);
+    let checkboxs = wrapper.find('input');
+    expect(checkboxs.at(1).props().disabled).toBe(true);
+    expect(checkboxs.at(2).props().disabled).toBe(false);
+    wrapper.setState({ disableName: 'Lucy' });
+    checkboxs = wrapper.find('input');
+    expect(checkboxs.at(1).props().disabled).toBe(false);
+    expect(checkboxs.at(2).props().disabled).toBe(true);
+  });
+
   // https://github.com/ant-design/ant-design/issues/4779
   it('should not switch pagination when select record', () => {
     const newData = [];
@@ -327,5 +361,34 @@ describe('Table.rowSelection', () => {
     }));
 
     expect(wrapper).toMatchSnapshot();
+  });
+
+  // https://github.com/ant-design/ant-design/issues/10629
+  it('should keep all checked state when remove item from dataSource', () => {
+    const wrapper = mount(
+      <Table
+        rowSelection={{
+          selectedRowKeys: [0, 1, 2, 3],
+        }}
+        columns={columns}
+        dataSource={data}
+      />
+    );
+    expect(wrapper.find(Checkbox).length).toBe(5);
+    wrapper.find(Checkbox).forEach((checkbox) => {
+      expect(checkbox.props().checked).toBe(true);
+      expect(checkbox.props().indeterminate).toBe(false);
+    });
+    wrapper.setProps({
+      dataSource: data.slice(1),
+      rowSelection: {
+        selectedRowKeys: [1, 2, 3],
+      },
+    });
+    expect(wrapper.find(Checkbox).length).toBe(4);
+    wrapper.find(Checkbox).forEach((checkbox) => {
+      expect(checkbox.props().checked).toBe(true);
+      expect(checkbox.props().indeterminate).toBe(false);
+    });
   });
 });

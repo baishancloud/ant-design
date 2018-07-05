@@ -58,7 +58,18 @@ CustomizedForm = Form.create({})(CustomizedForm);
 | mapPropsToFields | 把父组件的属性映射到表单项上（如：把 Redux store 中的值读出），需要对返回值中的表单域数据用 [`Form.createFormField`](#Form.createFormField) 标记 | (props) => Object{ fieldName: FormField { value } } |
 | validateMessages | 默认校验信息，可用于把默认错误信息改为中文等，格式与 [newMessages](https://github.com/yiminghe/async-validator/blob/master/src/messages.js) 返回值一致 | Object { [nested.path]&#x3A; String } |
 | onFieldsChange | 当 `Form.Item` 子节点的值发生改变时触发，可以把对应的值转存到 Redux store | Function(props, fields) |
-| onValuesChange | 任一表单域的值发生改变时的回调 | (props, values) => void |
+| onValuesChange | 任一表单域的值发生改变时的回调 | (props, changedValues, allValues) => void |
+
+经过 `Form.create` 之后如果要拿到 `ref`，可以使用 `rc-form` 提供的 `wrappedComponentRef`，[详细内容可以查看这里](https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140)。
+
+```jsx
+class CustomizedForm extends React.Component { ... }
+
+// use wrappedComponentRef
+const EnhancedForm =  Form.create()(CustomizedForm);
+<EnhancedForm wrappedComponentRef={(form) => this.form = form} />
+this.form // => The instance of CustomizedForm
+```
 
 经过 `Form.create` 包装的组件将会自带 `this.props.form` 属性，`this.props.form` 提供的 API 如下：
 
@@ -88,6 +99,41 @@ CustomizedForm = Form.create({})(CustomizedForm);
 | options.firstFields | 指定表单域会在碰到第一个失败了的校验规则后停止校验 | String\[] | \[] |
 | options.force | 对已经校验过的表单域，在 validateTrigger 再次被触发时是否再次校验 | boolean | false |
 | options.scroll | 定义 validateFieldsAndScroll 的滚动行为，详细配置见 [dom-scroll-into-view config](https://github.com/yiminghe/dom-scroll-into-view#function-parameter) | Object | {} |
+
+#### validateFields 的 callback 参数示例
+
+- `errors`:
+
+   ```js
+   {
+     "userName": {
+       "errors": [
+         {
+           "message": "Please input your username!",
+           "field": "userName"
+         }
+       ]
+     },
+     "password": {
+       "errors": [
+         {
+           "message": "Please input your Password!",
+           "field": "password"
+         }
+       ]
+     }
+   }
+   ```
+
+- `values`:
+
+   ```js
+   {
+     "userName": "username",
+     "password": "password",
+   }
+   ```
+
 
 ### Form.createFormField
 
@@ -148,7 +194,7 @@ CustomizedForm = Form.create({})(CustomizedForm);
 | enum | 枚举类型 | string | - |
 | len | 字段长度 | number | - |
 | max | 最大长度 | number | - |
-| message | 校验文案 | string | - |
+| message | 校验文案 | string\|ReactNode | - |
 | min | 最小长度 | number | - |
 | pattern | 正则表达式校验 | RegExp | - |
 | required | 是否必选 | boolean | `false` |

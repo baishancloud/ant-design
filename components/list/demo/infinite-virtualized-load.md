@@ -34,7 +34,9 @@ class VirtualizedExample extends React.Component {
     data: [],
     loading: false,
   }
+
   loadedRowsMap = {}
+
   getData = (callback) => {
     reqwest({
       url: fakeDataUrl,
@@ -46,13 +48,15 @@ class VirtualizedExample extends React.Component {
       },
     });
   }
-  componentWillMount() {
+
+  componentDidMount() {
     this.getData((res) => {
       this.setState({
         data: res.results,
       });
     });
   }
+
   handleInfiniteOnLoad = ({ startIndex, stopIndex }) => {
     let data = this.state.data;
     this.setState({
@@ -77,9 +81,11 @@ class VirtualizedExample extends React.Component {
       });
     });
   }
+
   isRowLoaded = ({ index }) => {
     return !!this.loadedRowsMap[index];
   }
+
   renderItem = ({ index, key, style }) => {
     const { data } = this.state;
     const item = data[index];
@@ -94,6 +100,7 @@ class VirtualizedExample extends React.Component {
       </List.Item>
     );
   }
+
   render() {
     const { data } = this.state;
     const vlist = ({ height, isScrolling, onChildScroll, scrollTop, onRowsRendered, width }) => (
@@ -129,7 +136,7 @@ class VirtualizedExample extends React.Component {
       <List>
         {
           data.length > 0 && (
-            <WindowScroller scrollElement={null}>
+            <WindowScroller>
               {infiniteLoader}
             </WindowScroller>
           )

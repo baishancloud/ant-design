@@ -42,6 +42,7 @@ class Avatar extends React.Component {
   state = {
     loading: false,
   };
+
   handleChange = (info) => {
     if (info.file.status === 'uploading') {
       this.setState({ loading: true });
@@ -55,6 +56,7 @@ class Avatar extends React.Component {
       }));
     }
   }
+
   render() {
     const uploadButton = (
       <div>
@@ -73,7 +75,7 @@ class Avatar extends React.Component {
         beforeUpload={beforeUpload}
         onChange={this.handleChange}
       >
-        {imageUrl ? <img src={imageUrl} alt="" /> : uploadButton}
+        {imageUrl ? <img src={imageUrl} alt="avatar" /> : uploadButton}
       </Upload>
     );
   }

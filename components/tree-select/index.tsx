@@ -19,7 +19,6 @@ export default class TreeSelect extends React.Component<TreeSelectProps, any> {
     transitionName: 'slide-up',
     choiceTransitionName: 'zoom',
     showSearch: false,
-    dropdownClassName: 'ant-select-tree-dropdown',
   };
 
   private rcTreeSelect: any;
@@ -52,7 +51,8 @@ export default class TreeSelect extends React.Component<TreeSelectProps, any> {
       size,
       notFoundContent,
       dropdownStyle,
-      ...restProps,
+      dropdownClassName,
+      ...restProps
     } = this.props;
 
     const cls = classNames({
@@ -67,6 +67,7 @@ export default class TreeSelect extends React.Component<TreeSelectProps, any> {
     return (
       <RcTreeSelect
         {...restProps}
+        dropdownClassName={classNames(dropdownClassName, `${prefixCls}-tree-dropdown`)}
         prefixCls={prefixCls}
         className={cls}
         dropdownStyle={{ maxHeight: '100vh', overflow: 'auto', ...dropdownStyle }}

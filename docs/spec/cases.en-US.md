@@ -29,7 +29,7 @@ OceanBase Cloud is a distributed relational database in a real sense, and OceanB
 
 [Visit](http://oceanbase.alipay.com)
 
-![OceanBase Cloud Platform](https://gw.alipayobjects.com/zos/rmsportal/hhtmRPAtPsUhwHpULFuu.png)
+![OceanBase Cloud Platform](https://gw.alipayobjects.com/zos/rmsportal/OYGCAlMwSWkdaKfxIDtz.png)
 
 ---
 
@@ -40,3 +40,11 @@ Based on Ant Design's design values, Ant Design Pro is an enterprise-class front
 [Visit](https://pro.ant.design)
 
 ![Ant Design Pro](https://gw.alipayobjects.com/zos/rmsportal/KZIUjJJZTEqMOgBHQkCb.png)
+
+### Alibaba Cloud StreamCompute
+
+Alibaba Cloud StreamCompute is a streaming analysis platform running on Alibaba Cloud platform. It provides users with tools for real-time analysis of streaming data in the cloud.
+
+[Visit](https://data.aliyun.com/product/sc)
+
+![Alibaba Cloud StreamCompute](https://img.alicdn.com/tfs/TB1LXWknntYBeNjy1XdXXXXyVXa-2880-1800.png)

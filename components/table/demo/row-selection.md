@@ -23,7 +23,7 @@ import { Table } from 'antd';
 const columns = [{
   title: 'Name',
   dataIndex: 'name',
-  render: text => <a href="#">{text}</a>,
+  render: text => <a href="javascript:;">{text}</a>,
 }, {
   title: 'Age',
   dataIndex: 'age',
@@ -60,10 +60,11 @@ const rowSelection = {
   },
   getCheckboxProps: record => ({
     disabled: record.name === 'Disabled User', // Column configuration not to be checked
+    name: record.name,
   }),
 };
 
 ReactDOM.render(
-  <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
-, mountNode);
+  <Table rowSelection={rowSelection} columns={columns} dataSource={data} />,
+  mountNode);
 ````

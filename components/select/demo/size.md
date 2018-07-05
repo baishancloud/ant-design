@@ -1,5 +1,5 @@
 ---
-order: 1
+order: 3
 title:
   zh-CN: 三种大小
   en-US: Sizes
@@ -15,6 +15,7 @@ The height of the input field for the select defaults to 32px. If size is set to
 
 ````jsx
 import { Select, Radio } from 'antd';
+
 const Option = Select.Option;
 
 const children = [];

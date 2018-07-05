@@ -13,8 +13,7 @@ export interface ColSize {
   pull?: number;
 }
 
-export interface ColProps {
-  className?: string;
+export interface ColProps extends React.HTMLAttributes<HTMLDivElement> {
   span?: number;
   order?: number;
   offset?: number;
@@ -25,8 +24,8 @@ export interface ColProps {
   md?: number | ColSize;
   lg?: number | ColSize;
   xl?: number | ColSize;
+  xxl?: number | ColSize;
   prefixCls?: string;
-  style?: React.CSSProperties;
 }
 
 export default class Col extends React.Component<ColProps, {}> {
@@ -43,6 +42,7 @@ export default class Col extends React.Component<ColProps, {}> {
     md: objectOrNumber,
     lg: objectOrNumber,
     xl: objectOrNumber,
+    xxl: objectOrNumber,
   };
 
   render() {
