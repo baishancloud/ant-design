@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, render } from 'enzyme';
 import Spin from '..';
 
 describe('Spin', () => {
@@ -15,9 +15,16 @@ describe('Spin', () => {
 
   it('should render custom indicator when it\'s set', () => {
     const customIndicator = <div className="custom-indicator" />;
-    const wrapper = shallow(
+    const wrapper = render(
       <Spin indicator={customIndicator} />
     );
-    expect(wrapper.contains(customIndicator)).toEqual(true);
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  it('should render with delay when it\'s mounted with spinning=true and delay', () => {
+    const wrapper = shallow(
+      <Spin spinning delay={500} />
+    );
+    expect(wrapper.find('.ant-spin').at(0).hasClass('ant-spin-spinning')).toEqual(false);
   });
 });

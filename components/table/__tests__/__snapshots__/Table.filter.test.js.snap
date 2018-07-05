@@ -27,7 +27,7 @@ exports[`Table.filter renders filter correctly 1`] = `
       class="ant-spin-container"
     >
       <div
-        class="ant-table ant-table-large ant-table-scroll-position-left"
+        class="ant-table ant-table-default ant-table-scroll-position-left"
       >
         <div
           class="ant-table-content"
@@ -46,7 +46,7 @@ exports[`Table.filter renders filter correctly 1`] = `
               >
                 <tr>
                   <th
-                    class=""
+                    class="ant-table-column-has-filters"
                   >
                     <span>
                       Name
@@ -65,7 +65,7 @@ exports[`Table.filter renders filter correctly 1`] = `
                   class="ant-table-row  ant-table-row-level-0"
                 >
                   <td
-                    class=""
+                    class="ant-table-column-has-filters"
                   >
                     <span
                       class="ant-table-row-indent indent-level-0"
@@ -78,7 +78,7 @@ exports[`Table.filter renders filter correctly 1`] = `
                   class="ant-table-row  ant-table-row-level-0"
                 >
                   <td
-                    class=""
+                    class="ant-table-column-has-filters"
                   >
                     <span
                       class="ant-table-row-indent indent-level-0"
@@ -91,7 +91,7 @@ exports[`Table.filter renders filter correctly 1`] = `
                   class="ant-table-row  ant-table-row-level-0"
                 >
                   <td
-                    class=""
+                    class="ant-table-column-has-filters"
                   >
                     <span
                       class="ant-table-row-indent indent-level-0"
@@ -104,7 +104,7 @@ exports[`Table.filter renders filter correctly 1`] = `
                   class="ant-table-row  ant-table-row-level-0"
                 >
                   <td
-                    class=""
+                    class="ant-table-column-has-filters"
                   >
                     <span
                       class="ant-table-row-indent indent-level-0"
@@ -132,13 +132,11 @@ exports[`Table.filter renders menu correctly 1`] = `
       class="ant-table-filter-dropdown"
     >
       <ul
-        aria-activedescendant=""
         class="ant-dropdown-menu  ant-dropdown-menu-root ant-dropdown-menu-vertical"
         role="menu"
         tabindex="0"
       >
         <li
-          aria-selected="false"
           class="ant-dropdown-menu-item"
           role="menuitem"
         >
@@ -162,7 +160,6 @@ exports[`Table.filter renders menu correctly 1`] = `
           </span>
         </li>
         <li
-          aria-selected="false"
           class="ant-dropdown-menu-item"
           role="menuitem"
         >
@@ -187,11 +184,11 @@ exports[`Table.filter renders menu correctly 1`] = `
         </li>
         <li
           class="ant-dropdown-menu-submenu ant-dropdown-menu-submenu-vertical"
+          role="menuitem"
         >
           <div
             aria-expanded="false"
             aria-haspopup="true"
-            aria-owns="title$Menu"
             class="ant-dropdown-menu-submenu-title"
             title="Title"
           >
@@ -230,13 +227,11 @@ exports[`Table.filter renders radio filter correctly 1`] = `
       class="ant-table-filter-dropdown"
     >
       <ul
-        aria-activedescendant=""
         class="ant-dropdown-menu  ant-dropdown-menu-root ant-dropdown-menu-vertical"
         role="menu"
         tabindex="0"
       >
         <li
-          aria-selected="false"
           class="ant-dropdown-menu-item"
           role="menuitem"
         >
@@ -260,7 +255,6 @@ exports[`Table.filter renders radio filter correctly 1`] = `
           </span>
         </li>
         <li
-          aria-selected="false"
           class="ant-dropdown-menu-item"
           role="menuitem"
         >
@@ -285,11 +279,11 @@ exports[`Table.filter renders radio filter correctly 1`] = `
         </li>
         <li
           class="ant-dropdown-menu-submenu ant-dropdown-menu-submenu-vertical"
+          role="menuitem"
         >
           <div
             aria-expanded="false"
             aria-haspopup="true"
-            aria-owns="title$Menu"
             class="ant-dropdown-menu-submenu-title"
             title="Title"
           >

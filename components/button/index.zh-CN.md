@@ -19,6 +19,7 @@ subtitle: 按钮
 
 | 属性 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
+| disabled | 按钮失效状态 | boolean | `false` |
 | ghost | 幽灵属性，使按钮背景透明，版本 2.7 中增加 | boolean | false |
 | href | 点击跳转的地址，指定此属性 button 的行为和 a 链接一致 | string | - |
 | htmlType | 设置 `button` 原生的 `type` 值，可选值请参考 [HTML 标准](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#attr-type) | string | `button` |

@@ -24,6 +24,7 @@ const page3Data = [
     title: <FormattedMessage id="app.home.tool-kitchen-title" />,
     content: <FormattedMessage id="app.home.tool-kitchen-content" />,
     img: 'https://gw.alipayobjects.com/zos/rmsportal/vUxYuDdsbBBcMDxSGmwc.svg',
+    link: 'http://kitchen.alipay.com/',
   },
 ];
 
@@ -62,19 +63,19 @@ export default function Page3({ locale }) {
               <a href={item.link} target="_black">
                 {child}
               </a>
-            )
+          )
         }
       </Col>
     );
   });
   return (
     <div className="home-page-wrapper page3" id="page3">
-      <div className="parallax-bg top" >
-        <svg width="1440px" height="557px" viewBox="0 0 1440 557" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" >
+      <div className="parallax-bg top">
+        <svg width="1440px" height="557px" viewBox="0 0 1440 557" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
           {svgChildren}
         </svg>
       </div>
-      <div className="page" >
+      <div className="page">
         <h2><FormattedMessage id="app.home.tool-title" /></h2>
         <ScrollOverPack location="page3">
           <QueueAnim key="queue" component={Row} type="bottom" leaveReverse>

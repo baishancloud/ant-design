@@ -29,6 +29,7 @@ export interface TabsProps {
   prefixCls?: string;
   className?: string;
   animated?: boolean | { inkBar: boolean; tabPane: boolean; };
+  tabBarGutter?: number;
 }
 
 // Tabs
@@ -78,7 +79,7 @@ export default class Tabs extends React.Component<TabsProps, any> {
 
   componentDidMount() {
     const NO_FLEX = ' no-flex';
-    const tabNode = ReactDOM.findDOMNode(this);
+    const tabNode = ReactDOM.findDOMNode(this) as Element;
     if (tabNode && !isFlexSupported() && tabNode.className.indexOf(NO_FLEX) === -1) {
       tabNode.className += NO_FLEX;
     }
@@ -99,6 +100,7 @@ export default class Tabs extends React.Component<TabsProps, any> {
       onPrevClick,
       onNextClick,
       animated = true,
+      tabBarGutter,
     } = this.props;
 
     let { inkBarAnimated, tabPaneAnimated } = typeof animated === 'object' ? {
@@ -171,6 +173,7 @@ export default class Tabs extends React.Component<TabsProps, any> {
         onPrevClick={onPrevClick}
         onNextClick={onNextClick}
         style={tabBarStyle}
+        tabBarGutter={tabBarGutter}
       />
     );
 

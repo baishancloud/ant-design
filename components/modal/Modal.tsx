@@ -47,6 +47,7 @@ export interface ModalProps {
   bodyStyle?: React.CSSProperties;
   maskStyle?: React.CSSProperties;
   mask?: boolean;
+  keyboard?: boolean;
 }
 
 export interface ModalFuncProps {
@@ -68,6 +69,7 @@ export interface ModalFuncProps {
   okCancel?: boolean;
   style?: React.CSSProperties;
   type?: string;
+  keyboard?: boolean;
 }
 
 export type ModalFunc = (props: ModalFuncProps) => {
@@ -95,7 +97,7 @@ export default class Modal extends React.Component<ModalProps, {}> {
     maskTransitionName: 'fade',
     confirmLoading: false,
     visible: false,
-    okType: 'primary',
+    okType: 'primary' as ButtonType,
   };
 
   static propTypes = {

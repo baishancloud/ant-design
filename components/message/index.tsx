@@ -1,3 +1,4 @@
+/* global Promise */
 import * as React from 'react';
 import Notification from 'rc-notification';
 import Icon from '../icon';
@@ -7,7 +8,9 @@ let defaultTop: number;
 let messageInstance: any;
 let key = 1;
 let prefixCls = 'ant-message';
+let transitionName = 'move-up';
 let getContainer: () => HTMLElement;
+let maxCount: number;
 
 function getMessageInstance(callback: (i: any) => void) {
   if (messageInstance) {
@@ -16,9 +19,10 @@ function getMessageInstance(callback: (i: any) => void) {
   }
   Notification.newInstance({
     prefixCls,
-    transitionName: 'move-up',
+    transitionName,
     style: { top: defaultTop }, // 覆盖原来的样式
     getContainer,
+    maxCount,
   }, (instance: any) => {
     if (messageInstance) {
       callback(messageInstance);
@@ -31,13 +35,23 @@ function getMessageInstance(callback: (i: any) => void) {
 
 type NoticeType = 'info' | 'success' | 'error' | 'warning' | 'loading';
 
+export interface ThenableArgument {
+  (_: any): any;
+}
+
+export interface MessageType {
+  (): void;
+  then: (fill: ThenableArgument, reject: ThenableArgument) => Promise<any>;
+  promise: Promise<any>;
+}
+
 function notice(
   content: React.ReactNode,
   duration: (() => void) | number = defaultDuration,
   type: NoticeType,
   onClose?: () => void,
-) {
-  let iconType = ({
+): MessageType {
+  const iconType = ({
     info: 'info-circle',
     success: 'check-circle',
     error: 'cross-circle',
@@ -51,25 +65,36 @@ function notice(
   }
 
   const target = key++;
-  getMessageInstance((instance) => {
-    instance.notice({
-      key: target,
-      duration,
-      style: {},
-      content: (
-        <div className={`${prefixCls}-custom-content ${prefixCls}-${type}`}>
-          <Icon type={iconType} />
-          <span>{content}</span>
-        </div>
-      ),
-      onClose,
+  const closePromise = new Promise((resolve) => {
+    const callback =  () => {
+      if (typeof onClose === 'function') {
+        onClose();
+      }
+      return resolve(true);
+    };
+    getMessageInstance((instance) => {
+      instance.notice({
+        key: target,
+        duration,
+        style: {},
+        content: (
+          <div className={`${prefixCls}-custom-content ${prefixCls}-${type}`}>
+            <Icon type={iconType} />
+            <span>{content}</span>
+          </div>
+        ),
+        onClose: callback,
+      });
     });
   });
-  return () => {
+  const result: any = () => {
     if (messageInstance) {
       messageInstance.removeNotice(target);
     }
   };
+  result.then = (filled: ThenableArgument, rejected: ThenableArgument) => closePromise.then(filled, rejected);
+  result.promise = closePromise;
+  return result;
 }
 
 type ConfigContent = React.ReactNode | string;
@@ -81,6 +106,8 @@ export interface ConfigOptions {
   duration?: number;
   prefixCls?: string;
   getContainer?: () => HTMLElement;
+  transitionName?: string;
+  maxCount?: number;
 }
 
 export default {
@@ -116,6 +143,14 @@ export default {
     }
     if (options.getContainer !== undefined) {
       getContainer = options.getContainer;
+    }
+    if (options.transitionName !== undefined) {
+      transitionName = options.transitionName;
+      messageInstance = null; // delete messageInstance for new transitionName
+    }
+    if (options.maxCount !== undefined) {
+      maxCount = options.maxCount;
+      messageInstance = null;
     }
   },
   destroy() {

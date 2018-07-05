@@ -93,7 +93,7 @@
         height: 24px;
         line-height: 24px;
         display: inline-block;
-        vertical-align: middle;
+        vertical-align: top;
         border: 0 none;
         cursor: pointer;
         outline: none;
@@ -152,10 +152,9 @@
     }
   }
   li&-treenode-disabled {
-    > span,
+    > span:not(.@{tree-prefix-cls}-switcher),
     > .@{tree-prefix-cls}-node-content-wrapper,
-    > .@{tree-prefix-cls}-node-content-wrapper span,
-    > span.@{tree-prefix-cls}-switcher {
+    > .@{tree-prefix-cls}-node-content-wrapper span {
       color: @disabled-color;
       cursor: not-allowed;
     }

@@ -50,14 +50,12 @@ export default class Header extends React.Component {
     const { intl, router } = this.context;
     router.listen(this.handleHideMenu);
     const { searchInput } = this;
-    /* eslint-disable global-require */
     document.addEventListener('keyup', (event) => {
       if (event.keyCode === 83 && event.target === document.body) {
         searchInput.focus();
       }
     });
     initDocSearch(intl.locale);
-    /* eslint-enable global-require */
   }
 
   handleShowMenu = () => {
@@ -86,7 +84,7 @@ export default class Header extends React.Component {
   }
 
   handleLangChange = () => {
-    const { pathname } = this.props.location;
+    const { location: { pathname } } = this.props;
     const currentProtocol = `${window.location.protocol}//`;
     const currentHref = window.location.href.substr(currentProtocol.length);
 
@@ -115,7 +113,7 @@ export default class Header extends React.Component {
     if (activeMenuItem === 'components' || location.pathname === 'changelog') {
       activeMenuItem = 'docs/react';
     }
-    const { locale } = this.context.intl;
+    const { intl: { locale } } = this.context;
     const isZhCN = locale === 'zh-CN';
 
     const headerClassName = classNames({
@@ -161,7 +159,7 @@ export default class Header extends React.Component {
             rel="noopener noreferrer"
           >
             <FormattedMessage id="app.header.menu.pro" />
-            <span style={{ display: 'inline-block', position: 'relative', top: -2, width: 6, marginLeft: 4 }}>
+            <span style={{ display: 'inline-block', position: 'relative', top: -2, width: 6, marginLeft: 8 }}>
               <Badge dot />
             </span>
           </a>

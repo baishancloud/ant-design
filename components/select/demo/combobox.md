@@ -1,5 +1,5 @@
 ---
-order: 4
+order: 5
 title:
   zh-CN: 智能提示
   en-US: Automatic completion
@@ -20,12 +20,14 @@ Using the [AutoComplete](/components/auto-complete/) component is strongly recom
 
 ````jsx
 import { Select } from 'antd';
+
 const Option = Select.Option;
 
 class App extends React.Component {
   state = {
     options: [],
   }
+
   handleChange = (value) => {
     let options;
     if (!value || value.indexOf('@') >= 0) {
@@ -38,6 +40,7 @@ class App extends React.Component {
     }
     this.setState({ options });
   }
+
   render() {
     // filterOption needs to be false，as the value is dynamically generated
     return (

@@ -21,39 +21,43 @@ class EditableCell extends React.Component {
     value: this.props.value,
     editable: false,
   }
+
   handleChange = (e) => {
     const value = e.target.value;
     this.setState({ value });
   }
+
   check = () => {
     this.setState({ editable: false });
     if (this.props.onChange) {
       this.props.onChange(this.state.value);
     }
   }
+
   edit = () => {
     this.setState({ editable: true });
   }
+
   render() {
     const { value, editable } = this.state;
     return (
       <div className="editable-cell">
         {
-          editable ?
-            <div className="editable-cell-input-wrapper">
-              <Input
-                value={value}
-                onChange={this.handleChange}
-                onPressEnter={this.check}
-              />
-              <Icon
-                type="check"
-                className="editable-cell-icon-check"
-                onClick={this.check}
-              />
-            </div>
-            :
-            <div className="editable-cell-text-wrapper">
+          editable ? (
+            <Input
+              value={value}
+              onChange={this.handleChange}
+              onPressEnter={this.check}
+              suffix={(
+                <Icon
+                  type="check"
+                  className="editable-cell-icon-check"
+                  onClick={this.check}
+                />
+)}
+            />
+          ) : (
+            <div style={{ paddingRight: 24 }}>
               {value || ' '}
               <Icon
                 type="edit"
@@ -61,6 +65,7 @@ class EditableCell extends React.Component {
                 onClick={this.edit}
               />
             </div>
+          )
         }
       </div>
     );
@@ -91,12 +96,12 @@ class EditableTable extends React.Component {
       dataIndex: 'operation',
       render: (text, record) => {
         return (
-          this.state.dataSource.length > 1 ?
-          (
-            <Popconfirm title="Sure to delete?" onConfirm={() => this.onDelete(record.key)}>
-              <a href="#">Delete</a>
-            </Popconfirm>
-          ) : null
+          this.state.dataSource.length > 1
+            ? (
+              <Popconfirm title="Sure to delete?" onConfirm={() => this.onDelete(record.key)}>
+                <a href="javascript:;">Delete</a>
+              </Popconfirm>
+            ) : null
         );
       },
     }];
@@ -116,6 +121,7 @@ class EditableTable extends React.Component {
       count: 2,
     };
   }
+
   onCellChange = (key, dataIndex) => {
     return (value) => {
       const dataSource = [...this.state.dataSource];
@@ -126,10 +132,12 @@ class EditableTable extends React.Component {
       }
     };
   }
+
   onDelete = (key) => {
     const dataSource = [...this.state.dataSource];
     this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
   }
+
   handleAdd = () => {
     const { count, dataSource } = this.state;
     const newData = {
@@ -143,12 +151,15 @@ class EditableTable extends React.Component {
       count: count + 1,
     });
   }
+
   render() {
     const { dataSource } = this.state;
     const columns = this.columns;
     return (
       <div>
-        <Button className="editable-add-btn" onClick={this.handleAdd}>Add</Button>
+        <Button onClick={this.handleAdd} type="primary" style={{ marginBottom: 16 }}>
+          Add a row
+        </Button>
         <Table bordered dataSource={dataSource} columns={columns} />
       </div>
     );
@@ -163,42 +174,26 @@ ReactDOM.render(<EditableTable />, mountNode);
   position: relative;
 }
 
-.editable-cell-input-wrapper,
-.editable-cell-text-wrapper {
-  padding-right: 24px;
-}
-
-.editable-cell-text-wrapper {
-  padding: 5px 24px 5px 5px;
-}
-
 .editable-cell-icon,
 .editable-cell-icon-check {
-  position: absolute;
-  right: 0;
-  width: 20px;
   cursor: pointer;
 }
 
 .editable-cell-icon {
-  line-height: 18px;
+  line-height: 14px;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  margin-top: -7px;
   display: none;
 }
 
-.editable-cell-icon-check {
-  line-height: 28px;
-}
-
-.editable-cell:hover .editable-cell-icon {
+td:hover .editable-cell-icon {
   display: inline-block;
 }
 
 .editable-cell-icon:hover,
 .editable-cell-icon-check:hover {
   color: #108ee9;
-}
-
-.editable-add-btn {
-  margin-bottom: 8px;
 }
 ````

@@ -27,7 +27,7 @@ The first level navigation is inclined left near a logo, and the secondary menu 
 
 ## Visualization rules
 
- Style of a navigation should conform to the its level.
+ Style of a navigation should conform to its level.
 
 - **Emphasis by colorblock**
 
@@ -43,7 +43,7 @@ The first level navigation is inclined left near a logo, and the secondary menu 
 
 - **Enlarge the size of the font**
 
-  `12px`、`14px` is a standard font size of navigations，`14px` is used for the first and the second level of the navigation. You can choose a approprigate font size in terms of the level of your navigation.
+  `12px`、`14px` is a standard font size of navigations，`14px` is used for the first and the second level of the navigation. You can choose a appropriate font size in terms of the level of your navigation.
 
 ## Component Overview
 
@@ -76,6 +76,7 @@ The wrapper.
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | className | container className | string | - |
+| hasSider | whether contain Sider in children, don't have to assign it normally. Useful in ssr avoid style flickering | boolean | - |
 | style | to customize the styles | object | - |
 
 > APIs of `Layout.Header` `Layout.Footer` `Layout.Content` are the same as that of `Layout`.
@@ -94,6 +95,7 @@ The sidebar.
 | defaultCollapsed | to set the initial status | boolean | false |
 | reverseArrow | reverse direction of arrow, for a sider that expands from the right | boolean | false |
 | style | to customize the styles | object | - |
+| theme | color theme of the sidebar | string: `light` `dark` | `dark` |
 | trigger | specify the customized trigger, set to null to hide the trigger | string\|ReactNode | - |
 | width | width of the sidebar | number\|string | 200 |
 | onCollapse | the callback function, executed by clicking the trigger or activating the responsive layout | (collapsed, type) => {} | - |

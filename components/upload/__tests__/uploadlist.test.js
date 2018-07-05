@@ -3,6 +3,7 @@ import { mount } from 'enzyme';
 import Upload from '..';
 import Form from '../../form';
 import { errorRequest, successRequest } from './requests';
+import { setup, teardown } from './mock';
 
 const delay = timeout => new Promise(resolve => setTimeout(resolve, timeout));
 
@@ -21,11 +22,14 @@ const fileList = [{
 }];
 
 describe('Upload List', () => {
+  beforeEach(() => setup());
+  afterEach(() => teardown());
+
   // https://github.com/ant-design/ant-design/issues/4653
   it('should use file.thumbUrl for <img /> in priority', () => {
     const wrapper = mount(
       <Upload defaultFileList={fileList} listType="picture">
-        <button>upload</button>
+        <button type="button">upload</button>
       </Upload>
     );
     fileList.forEach((file, i) => {
@@ -53,7 +57,7 @@ describe('Upload List', () => {
     }];
     const wrapper = mount(
       <Upload defaultFileList={list}>
-        <button>upload</button>
+        <button type="button">upload</button>
       </Upload>
     );
     expect(wrapper.find('.ant-upload-list-item').length).toBe(2);
@@ -80,13 +84,13 @@ describe('Upload List', () => {
         onChange={onChange}
         customRequest={successRequest}
       >
-        <button>upload</button>
+        <button type="button">upload</button>
       </Upload>
     );
     wrapper.find('input').simulate('change', {
       target: {
         files: [
-          { filename: 'foo.png' },
+          { name: 'foo.png' },
         ],
       },
     });
@@ -106,19 +110,19 @@ describe('Upload List', () => {
         onChange={onChange}
         customRequest={errorRequest}
       >
-        <button>upload</button>
+        <button type="button">upload</button>
       </Upload>
     );
     wrapper.find('input').simulate('change', {
       target: {
         files: [
-          { filename: 'foo.png' },
+          { name: 'foo.png' },
         ],
       },
     });
   });
 
-  it('does not change filelist when beforeUpload returns false', () => {
+  it('does concat filelist when beforeUpload returns false', () => {
     const handleChange = jest.fn();
     const wrapper = mount(
       <Upload
@@ -127,20 +131,20 @@ describe('Upload List', () => {
         onChange={handleChange}
         beforeUpload={() => false}
       >
-        <button>upload</button>
+        <button type="button">upload</button>
       </Upload>
     );
 
     wrapper.find('input').simulate('change', {
       target: {
         files: [
-          { filename: 'foo.png' },
+          { name: 'foo.png' },
         ],
       },
     });
 
-    expect(wrapper.state().fileList).toBe(fileList);
-    expect(handleChange.mock.calls[0][0].fileList).toHaveLength(1);
+    expect(wrapper.state().fileList.length).toBe(fileList.length + 1);
+    expect(handleChange.mock.calls[0][0].fileList).toHaveLength(3);
   });
 
   // https://github.com/ant-design/ant-design/issues/7762
@@ -148,15 +152,14 @@ describe('Upload List', () => {
     let errors;
     class TestForm extends React.Component {
       handleSubmit = () => {
-        const { validateFields } = this.props.form;
+        const { form: { validateFields } } = this.props;
         validateFields((err) => {
           errors = err;
         });
       }
 
       render() {
-        const { getFieldDecorator } = this.props.form;
-
+        const { form: { getFieldDecorator } } = this.props;
         return (
           <Form onSubmit={this.handleSubmit}>
             <Form.Item>
@@ -179,7 +182,7 @@ describe('Upload List', () => {
                 <Upload
                   beforeUpload={() => false}
                 >
-                  <button>upload</button>
+                  <button type="button">upload</button>
                 </Upload>
               )}
             </Form.Item>
@@ -196,7 +199,7 @@ describe('Upload List', () => {
     wrapper.find('input').simulate('change', {
       target: {
         files: [
-          { filename: 'foo.png' },
+          { name: 'foo.png' },
         ],
       },
     });
@@ -212,7 +215,7 @@ describe('Upload List', () => {
         defaultFileList={fileList}
         onPreview={handlePreview}
       >
-        <button>upload</button>
+        <button type="button">upload</button>
       </Upload>
     );
     wrapper.find('.anticon-eye-o').at(0).simulate('click');
@@ -231,7 +234,7 @@ describe('Upload List', () => {
         onRemove={handleRemove}
         onChange={handleChange}
       >
-        <button>upload</button>
+        <button type="button">upload</button>
       </Upload>
     );
     wrapper.find('.anticon-delete').at(0).simulate('click');
@@ -254,11 +257,83 @@ describe('Upload List', () => {
         defaultFileList={newFileList}
         onPreview={handlePreview}
       >
-        <button>upload</button>
+        <button type="button">upload</button>
       </Upload>
     );
     wrapper.setState({});
-    await delay(0);
+    await delay(200);
     expect(wrapper.state().fileList[2].thumbUrl).not.toBeFalsy();
+  });
+
+  it('should non-image format file preview', () => {
+    const list = [
+      {
+        name: 'not-image',
+        status: 'done',
+        uid: -3,
+        url: 'https://cdn.xxx.com/aaa.zip',
+        thumbUrl: 'data:application/zip;base64,UEsDBAoAAAAAADYZYkwAAAAAAAAAAAAAAAAdAAk',
+        originFileObj: new File([], 'aaa.zip'),
+      },
+      {
+        name: 'image',
+        status: 'done',
+        uid: -4,
+        url: 'https://cdn.xxx.com/aaa',
+      },
+      {
+        name: 'not-image',
+        status: 'done',
+        uid: -5,
+        url: 'https://cdn.xxx.com/aaa.xx',
+      },
+      {
+        name: 'not-image',
+        status: 'done',
+        uid: -6,
+        url: 'https://cdn.xxx.com/aaa.png/xx.xx',
+      },
+      {
+        name: 'image',
+        status: 'done',
+        uid: -7,
+        url: 'https://cdn.xxx.com/xx.xx/aaa.png',
+      },
+      {
+        name: 'image',
+        status: 'done',
+        uid: -8,
+        url: 'https://cdn.xxx.com/xx.xx/aaa.png',
+        thumbUrl: 'data:image/png;base64,UEsDBAoAAAAAADYZYkwAAAAAAAAAAAAAAAAdAAk',
+      },
+      {
+        name: 'image',
+        status: 'done',
+        uid: -9,
+        url: 'https://cdn.xxx.com/xx.xx/aaa.png?query=123',
+      },
+      {
+        name: 'image',
+        status: 'done',
+        uid: -10,
+        url: 'https://cdn.xxx.com/xx.xx/aaa.png#anchor',
+      },
+      {
+        name: 'image',
+        status: 'done',
+        uid: -11,
+        url: 'https://cdn.xxx.com/xx.xx/aaa.png?query=some.query.with.dot',
+      },
+    ];
+
+    const wrapper = mount(
+      <Upload
+        listType="picture"
+        defaultFileList={list}
+      >
+        <button type="button">upload</button>
+      </Upload>
+    );
+    expect(wrapper.render()).toMatchSnapshot();
   });
 });

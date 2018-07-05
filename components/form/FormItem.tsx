@@ -2,8 +2,8 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import intersperse from 'intersperse';
 import Animate from 'rc-animate';
-import PureRenderMixin from 'rc-util/lib/PureRenderMixin';
 import Row from '../grid/row';
 import Col, { ColProps } from '../grid/col';
 import warning from '../_util/warning';
@@ -56,6 +56,8 @@ export default class FormItem extends React.Component<FormItemProps, any> {
 
   context: FormItemContext;
 
+  helpShow = false;
+
   componentDidMount() {
     warning(
       this.getControls(this.props.children, true).length <= 1,
@@ -64,19 +66,20 @@ export default class FormItem extends React.Component<FormItemProps, any> {
     );
   }
 
-  shouldComponentUpdate(...args: any[]) {
-    return PureRenderMixin.shouldComponentUpdate.apply(this, args);
-  }
-
-  getHelpMsg() {
-    const props = this.props;
-    const onlyControl = this.getOnlyControl();
-    if (props.help === undefined && onlyControl) {
+  getHelpMessage() {
+    const { help } = this.props;
+    if (help === undefined && this.getOnlyControl()) {
       const errors = this.getField().errors;
-      return errors ? errors.map((e: any) => e.message).join(', ') : '';
+      if (errors) {
+        return intersperse(errors.map((e: any, index: number) => (
+          React.isValidElement(e.message)
+            ? React.cloneElement(e.message, { key: index })
+            : e.message
+        )), ' ');
+      }
+      return '';
     }
-
-    return props.help;
+    return help;
   }
 
   getControls(children: React.ReactNode, recursively: boolean) {
@@ -89,7 +92,7 @@ export default class FormItem extends React.Component<FormItemProps, any> {
 
       const child = childrenArray[i] as React.ReactElement<any>;
       if (child.type &&
-          (child.type as any === FormItem || (child.type as any).displayName === 'FormItem')) {
+        (child.type as any === FormItem || (child.type as any).displayName === 'FormItem')) {
         continue;
       }
       if (!child.props) {
@@ -126,16 +129,32 @@ export default class FormItem extends React.Component<FormItemProps, any> {
     return this.getChildProp(FIELD_DATA_PROP);
   }
 
+  onHelpAnimEnd = (_key: string, helpShow: boolean) => {
+    this.helpShow = helpShow;
+    if (!helpShow) {
+      this.setState({});
+    }
+  }
+
   renderHelp() {
     const prefixCls = this.props.prefixCls;
-    const help = this.getHelpMsg();
+    const help = this.getHelpMessage();
     const children = help ? (
       <div className={`${prefixCls}-explain`} key="help">
         {help}
       </div>
     ) : null;
+    if (children) {
+      this.helpShow = !!children;
+    }
     return (
-      <Animate transitionName="show-help" component="" transitionAppear key="help">
+      <Animate
+        transitionName="show-help"
+        component=""
+        transitionAppear
+        key="help"
+        onEnd={this.onHelpAnimEnd}
+      >
         {children}
       </Animate>
     );
@@ -186,7 +205,8 @@ export default class FormItem extends React.Component<FormItemProps, any> {
     }
     return (
       <div className={classes}>
-        {c1}{c2}{c3}
+        <span className={`${this.props.prefixCls}-item-children`}>{c1}</span>
+        {c2}{c3}
       </div>
     );
   }
@@ -222,14 +242,21 @@ export default class FormItem extends React.Component<FormItemProps, any> {
 
   // Resolve duplicated ids bug between different forms
   // https://github.com/ant-design/ant-design/issues/7351
-  onLabelClick = () => {
+  onLabelClick = (e: any) => {
+    const { label } = this.props;
     const id = this.props.id || this.getId();
     if (!id) {
       return;
     }
     const controls = document.querySelectorAll(`[id="${id}"]`);
     if (controls.length !== 1) {
-      const control = ReactDOM.findDOMNode(this).querySelector(`[id="${id}"]`) as HTMLElement;
+      // Only prevent in default situation
+      // Avoid preventing event in `label={<a href="xx">link</a>}``
+      if (typeof label === 'string') {
+        e.preventDefault();
+      }
+      const formItemNode = ReactDOM.findDOMNode(this) as Element;
+      const control = formItemNode.querySelector(`[id="${id}"]`) as HTMLElement;
       if (control && control.focus) {
         control.focus();
       }
@@ -291,11 +318,10 @@ export default class FormItem extends React.Component<FormItemProps, any> {
     const style = props.style;
     const itemClassName = {
       [`${prefixCls}-item`]: true,
-      [`${prefixCls}-item-with-help`]: !!this.getHelpMsg(),
+      [`${prefixCls}-item-with-help`]: this.helpShow,
       [`${prefixCls}-item-no-colon`]: !props.colon,
       [`${props.className}`]: !!props.className,
     };
-
     return (
       <Row className={classNames(itemClassName)} style={style}>
         {children}

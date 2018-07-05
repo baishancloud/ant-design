@@ -19,6 +19,7 @@ Note: You don't need `Col` to control the width in the `compact` mode.
 
 ````jsx
 import { Input, Col, Select, InputNumber, DatePicker, AutoComplete, Cascader } from 'antd';
+
 const InputGroup = Input.Group;
 const Option = Select.Option;
 
@@ -50,6 +51,7 @@ class CompactDemo extends React.Component {
   state = {
     dataSource: [],
   }
+
   handleChange = (value) => {
     this.setState({
       dataSource: !value || value.indexOf('@') >= 0 ? [] : [
@@ -59,11 +61,12 @@ class CompactDemo extends React.Component {
       ],
     });
   }
+
   render() {
     return (
       <div>
         <InputGroup size="large">
-          <Col span={4}>
+          <Col span={5}>
             <Input defaultValue="0571" />
           </Col>
           <Col span={8}>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Checkbox from '../checkbox';
+import Checkbox, { CheckboxChangeEvent } from '../checkbox';
 import Dropdown from '../dropdown';
 import Menu from '../menu';
 import Icon from '../icon';
@@ -68,12 +68,16 @@ export default class SelectionCheckboxAll<T> extends
   setCheckState(props: SelectionCheckboxAllProps<T>) {
     const checked = this.getCheckState(props);
     const indeterminate = this.getIndeterminateState(props);
-    if (checked !== this.state.checked) {
-      this.setState({ checked });
-    }
-    if (indeterminate !== this.state.indeterminate) {
-      this.setState({ indeterminate });
-    }
+    this.setState((prevState) => {
+      let newState: SelectionCheckboxAllState = {};
+      if (indeterminate !== prevState.indeterminate) {
+        newState.indeterminate = indeterminate;
+      }
+      if (checked !== prevState.checked) {
+        newState.checked = checked;
+      }
+      return newState;
+    });
   }
 
   getCheckState(props: SelectionCheckboxAllProps<T>) {
@@ -113,7 +117,7 @@ export default class SelectionCheckboxAll<T> extends
     return indeterminate;
   }
 
-  handleSelectAllChagne = (e: React.ChangeEvent<HTMLInputElement>) => {
+  handleSelectAllChagne = (e: CheckboxChangeEvent) => {
     let checked = e.target.checked;
     this.props.onSelect(checked ? 'all' : 'removeAll', 0, null);
   }
