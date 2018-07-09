@@ -73,7 +73,6 @@ input[type="checkbox"] {
   .reset-component;
   margin-bottom: @form-item-margin-bottom;
   vertical-align: top;
-  transition: margin .15s steps(1);
 
   // nested FormItem
   &-control > &:last-child,
@@ -87,9 +86,12 @@ input[type="checkbox"] {
     .clearfix;
   }
 
+  &-children {
+    position: relative;
+  }
+
   &-with-help {
     margin-bottom: @form-item-margin-bottom - @font-size-base * @line-height-base - @form-help-margin-top;
-    transition: none;
   }
 
   &-label {
@@ -130,8 +132,9 @@ input[type="checkbox"] {
 .@{form-prefix-cls}-extra {
   color: @text-color-secondary;
   line-height: @line-height-base;
-  transition: color .15s @ease-out;
+  transition: color .3s @ease-out; // sync input color transition
   margin-top: @form-help-margin-top;
+  clear: both;
 }
 
 .@{form-prefix-cls}-extra {
@@ -233,8 +236,8 @@ form {
     margin-left: 0;
   }
 
-  .@{ant-prefix}-input-number {
-    margin-right: 8px;
+  .@{ant-prefix}-input-number + .@{form-prefix-cls}-text {
+    margin-left: 8px;
   }
 
   .@{ant-prefix}-select,
@@ -249,7 +252,9 @@ form {
   }
 
   // fix input with addon position. https://github.com/ant-design/ant-design/issues/8243
+  :not(.@{ant-prefix}-input-group-wrapper) > .@{ant-prefix}-input-group,
   .@{ant-prefix}-input-group-wrapper {
+    display: inline-block;
     vertical-align: middle;
     position: relative;
     top: -1px;
@@ -371,7 +376,7 @@ form {
       margin-bottom: 24px;
     }
 
-    > div {
+    > .@{form-prefix-cls}-item-control-wrapper, > .@{form-prefix-cls}-item-label {
       display: inline-block;
       vertical-align: middle;
     }
@@ -396,15 +401,16 @@ form {
 .has-warning,
 .has-error,
 .is-validating {
-  &.has-feedback:after {
+  &.has-feedback .@{form-prefix-cls}-item-children:after {
     position: absolute;
-    top: 0;
+    top: 50%;
     right: 0;
     visibility: visible;
     pointer-events: none;
     width: @form-component-height;
-    height: @form-component-max-height;
-    line-height: @form-component-max-height;
+    height: 20px;
+    line-height: 20px;
+    margin-top: -10px;
     text-align: center;
     font-size: @form-feedback-icon-size;
     animation: zoomIn .3s @ease-out-back;
@@ -414,7 +420,7 @@ form {
 }
 
 .has-success {
-  &.has-feedback:after {
+  &.has-feedback .@{form-prefix-cls}-item-children:after {
     animation-name: diffZoomIn1 !important;
     content: '\e630';
     color: @success-color;
@@ -424,7 +430,7 @@ form {
 .has-warning {
   .form-control-validation(@warning-color; @warning-color;);
 
-  &.has-feedback:after {
+  &.has-feedback .@{form-prefix-cls}-item-children:after {
     content: '\e62c';
     color: @warning-color;
     animation-name: diffZoomIn3 !important;
@@ -471,7 +477,7 @@ form {
 .has-error {
   .form-control-validation(@error-color; @error-color;);
 
-  &.has-feedback:after {
+  &.has-feedback .@{form-prefix-cls}-item-children:after {
     content: '\e62e';
     color: @error-color;
     animation-name: diffZoomIn2 !important;
@@ -485,6 +491,12 @@ form {
     &-open .@{ant-prefix}-select-selection,
     &-focused .@{ant-prefix}-select-selection {
       .active(@error-color);
+    }
+  }
+
+  .@{ant-prefix}-select.@{ant-prefix}-select-auto-complete {
+    .@{ant-prefix}-input:focus {
+      border-color: @error-color;
     }
   }
 
@@ -535,7 +547,7 @@ form {
 }
 
 .is-validating {
-  &.has-feedback:after {
+  &.has-feedback .@{form-prefix-cls}-item-children:after {
     display: inline-block;
     animation: loadingCircle 1s infinite linear;
     content: "\e64d";
@@ -545,7 +557,11 @@ form {
 
 .@{ant-prefix}-advanced-search-form {
   .@{form-prefix-cls}-item {
-    margin-bottom: 24px;
+    margin-bottom: @form-item-margin-bottom;
+
+    &-with-help {
+      margin-bottom: @form-item-margin-bottom - @font-size-base * @line-height-base - @form-help-margin-top;
+    }
   }
 }
 
@@ -561,7 +577,7 @@ form {
   }
 }
 
-.show-help-motion(show-help, antShowHelp, 0.15s);
+.show-help-motion(show-help, antShowHelp, 0.3s);
 
 @keyframes antShowHelpIn {
   0% {

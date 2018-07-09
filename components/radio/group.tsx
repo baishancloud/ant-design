@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import shallowEqual from 'shallowequal';
 import Radio from './radio';
-import { RadioGroupProps, RadioGroupState } from './interface';
+import { RadioGroupProps, RadioGroupState, RadioChangeEvent } from './interface';
 
 function getCheckedValue(children: React.ReactNode) {
   let value = null;
@@ -20,6 +20,7 @@ function getCheckedValue(children: React.ReactNode) {
 export default class RadioGroup extends React.Component<RadioGroupProps, RadioGroupState> {
   static defaultProps = {
     disabled: false,
+    prefixCls: 'ant-radio',
   };
 
   static childContextTypes = {
@@ -73,7 +74,7 @@ export default class RadioGroup extends React.Component<RadioGroupProps, RadioGr
       !shallowEqual(this.state, nextState);
   }
 
-  onRadioChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
+  onRadioChange = (ev: RadioChangeEvent) => {
     const lastValue = this.state.value;
     const { value } = ev.target;
     if (!('value' in this.props)) {
@@ -89,9 +90,10 @@ export default class RadioGroup extends React.Component<RadioGroupProps, RadioGr
   }
   render() {
     const props = this.props;
-    const { prefixCls = 'ant-radio-group', className = '', options } = props;
-    const classString = classNames(prefixCls, {
-      [`${prefixCls}-${props.size}`]: props.size,
+    const { prefixCls, className = '', options } = props;
+    const groupPrefixCls = `${prefixCls}-group`;
+    const classString = classNames(groupPrefixCls, {
+      [`${groupPrefixCls}-${props.size}`]: props.size,
     }, className);
 
     let children: React.ReactChildren[] | React.ReactElement<any>[] | React.ReactNode = props.children;
@@ -103,6 +105,7 @@ export default class RadioGroup extends React.Component<RadioGroupProps, RadioGr
           return (
             <Radio
               key={index}
+              prefixCls={prefixCls}
               disabled={this.props.disabled}
               value={option}
               onChange={this.onRadioChange}
@@ -115,6 +118,7 @@ export default class RadioGroup extends React.Component<RadioGroupProps, RadioGr
           return (
             <Radio
               key={index}
+              prefixCls={prefixCls}
               disabled={option.disabled || this.props.disabled}
               value={option.value}
               onChange={this.onRadioChange}

@@ -16,6 +16,7 @@ To get a customized button, just set `type`/`shape`/`size`/`loading`/`disabled`.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
+| disabled | disabled state of button | boolean | `false` |
 | ghost | make background transparent and invert text and border colors, added in 2.7 | boolean | false |
 | href | redirect url of link button | string | - |
 | htmlType | set the original html `type` of `button`, see: [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#attr-type) | string | `button` |
@@ -36,7 +37,8 @@ To get a customized button, just set `type`/`shape`/`size`/`loading`/`disabled`.
   margin-right: 8px;
   margin-bottom: 12px;
 }
-[id^=components-button-demo-] .ant-btn-group > .ant-btn {
+[id^=components-button-demo-] .ant-btn-group > .ant-btn,
+[id^=components-button-demo-] .ant-btn-group > span > .ant-btn {
   margin-right: 0;
 }
 </style>

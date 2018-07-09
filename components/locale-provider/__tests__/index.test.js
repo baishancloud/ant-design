@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 import moment from 'moment';
 import MockDate from 'mockdate';
 import { LocaleProvider, Pagination, DatePicker, TimePicker, Calendar,
-  Popconfirm, Table, Modal, Select, Transfer } from '../../';
+  Popconfirm, Table, Modal, Select, Transfer } from '../..';
 import enGB from '../en_GB';
 import frFR from '../fr_FR';
 import nlBE from '../nl_BE';
@@ -35,12 +35,14 @@ import faIR from '../fa_IR';
 import elGR from '../el_GR';
 import nbNO from '../nb_NO';
 import srRS from '../sr_RS';
+import slSI from '../sl_SI';
 import isIS from '../is_IS';
 import arEG from '../ar_EG';
 import ukUA from '../uk_UA';
 import zhCN from '../zh_CN';
+import kuIQ from '../ku_IQ';
 
-const locales = [enUS, ptBR, ptPT, ruRU, esES, svSE, frBE, deDE, nlNL, caES, csCZ, koKR, etEE, skSK, jaJP, trTR, zhTW, fiFI, plPL, bgBG, enGB, frFR, nlBE, itIT, viVN, thTH, faIR, elGR, nbNO, srRS, isIS, arEG, ukUA, zhCN];
+const locales = [enUS, ptBR, ptPT, ruRU, esES, svSE, frBE, deDE, nlNL, caES, csCZ, koKR, etEE, skSK, jaJP, trTR, zhTW, fiFI, plPL, bgBG, enGB, frFR, nlBE, itIT, viVN, thTH, faIR, elGR, nbNO, srRS, slSI, isIS, arEG, ukUA, zhCN, kuIQ];
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -86,7 +88,7 @@ const App = () => (
 
 describe('Locale Provider', () => {
   beforeAll(() => {
-    MockDate.set(moment('2017-09-18T03:30:07.795Z').valueOf() + (new Date().getTimezoneOffset() * 60 * 1000));
+    MockDate.set(moment('2017-09-18T03:30:07.795'));
   });
 
   afterAll(() => {
@@ -111,6 +113,7 @@ describe('Locale Provider', () => {
           title: 'Hello World!',
         });
       }
+
       render() {
         return null;
       }
@@ -140,8 +143,9 @@ describe('Locale Provider', () => {
       }
 
       render() {
+        const { locale } = this.state;
         return (
-          <LocaleProvider locale={this.state.locale}>
+          <LocaleProvider locale={locale}>
             <div>
               <DatePicker defaultValue={moment()} open />
             </div>

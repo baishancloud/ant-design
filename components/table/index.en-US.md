@@ -53,6 +53,7 @@ const columns = [{
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | bordered | Whether to show all table borders | boolean | `false` |
+| childrenColumnName | The column contains children to display | string\[] | children |
 | columns | Columns of table | [ColumnProps](https://git.io/vMMXC)\[] | - |
 | components | Override default table elements | object | - |
 | dataSource | Data record array to be displayed | any\[] | - |
@@ -65,11 +66,11 @@ const columns = [{
 | indentSize | Indent size in pixels of tree data | number | 15 |
 | loading | Loading status of table | boolean\|[object](https://ant.design/components/spin-cn/#API) ([more](https://github.com/ant-design/ant-design/issues/4544#issuecomment-271533135)) | `false` |
 | locale | i18n text including filter, sort, empty text, etc | object | filterConfirm: 'Ok' <br> filterReset: 'Reset' <br> emptyText: 'No Data' <br> [Default](https://github.com/ant-design/ant-design/issues/575#issuecomment-159169511) |
-| pagination | Pagination [config](/components/pagination/), hide it by setting it to `false` | object |  |
+| pagination | Pagination [config](#pagination) or [`Pagination`](/components/pagination/), hide it by setting it to `false` | object |  |
 | rowClassName | Row's className | Function(record, index):string | - |
 | rowKey | Row's unique key, could be a string or function that returns a string | string\|Function(record):string | `key` |
 | rowSelection | Row selection [config](#rowSelection) | object | null |
-| scroll | Whether table can be scrolled in x/y direction, `x` or `y` can be a number that indicates the width and height of table body | object | - |
+| scroll | Set horizontal or vertical scrolling, can also be used to specify the width and height of the scroll area. It is recommended to set a number for `x`, if you want to set it to `true`, you need to add style `.ant-table td { white-space: nowrap; }`. | { x: number \| true, y: number } | - |
 | showHeader | Whether to show table header | boolean | `true` |
 | size | Size of table | `default` \| `middle` \| `small` | `default` |
 | title | Table title renderer | Function(currentPageData) |  |
@@ -79,12 +80,34 @@ const columns = [{
 | onHeaderRow | Set props on per header row | Function(column, index) | - |
 | onRow | Set props on per row | Function(record, index) | - |
 
+#### onRow usage
+
+Same as `onRow` `onHeaderRow` `onCell` `onHeaderCell`
+
+```jsx
+<Table
+  onRow={(record) => {
+    return {
+      onClick: () => {},       // click row
+      onMouseEnter: () => {},  // mouse enter row
+      onXxxx...
+    };
+  }}
+  onHeaderRow={(column) => {
+    return {
+      onClick: () => {},        // click header row
+    };
+  }}
+/>
+```
+
 ### Column
 
 One of the Table `columns` prop for describing the table's columns, Column has the same API.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
+| align | specify how content is aligned | 'left' \| 'right' \| 'center' | 'left' |
 | className | className of this column | string | - |
 | colSpan | Span of this column's title | number |  |
 | dataIndex | Display field of the data record, could be set like `a.b.c` | string | - |
@@ -114,12 +137,23 @@ One of the Table `columns` prop for describing the table's columns, Column has t
 | -------- | ----------- | ---- | ------- |
 | title | Title of the column group | string\|ReactNode | - |
 
+### pagination
+
+Properties for pagination.
+
+| Property | Description | Type | Default |
+| -------- | ----------- | ---- | ------- |
+| position | specify the position of `Pagination` | 'top' \| 'bottom' \| 'both' | 'bottom' |
+
+More about pagination, please check [`Pagination`](/components/pagination/).
+
 ### rowSelection
 
 Properties for row selection.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
+| columnWidth | Set the width of the selection column | string\|number | - |
 | fixed | Fixed selection column on the left | boolean | - |
 | getCheckboxProps | Get Checkbox or Radio props | Function(record) | - |
 | hideDefaultSelections | Remove the default `Select All` and `Select Invert` selections | boolean | `false` |
@@ -127,7 +161,7 @@ Properties for row selection.
 | selections | Custom selection [config](#rowSelection), only displays default selections when set to `true` | object\[]\|boolean | - |
 | type | `checkbox` or `radio` | `checkbox` \| `radio` | `checkbox` |
 | onChange | Callback executed when selected rows change | Function(selectedRowKeys, selectedRows) | - |
-| onSelect | Callback executed when select/deselect one row | Function(record, selected, selectedRows) | - |
+| onSelect | Callback executed when select/deselect one row | Function(record, selected, selectedRows, nativeEvent) | - |
 | onSelectAll | Callback executed when select/deselect all rows | Function(selected, selectedRows, changeRows) | - |
 | onSelectInvert | Callback executed when row selection is inverted | Function(selectedRows) | - |
 
@@ -179,7 +213,7 @@ According to [React documentation](https://facebook.github.io/react/docs/lists-a
 
 If `dataSource[i].key` is not provided, then you should specify the primary key of dataSource value via `rowKey`. If not, warnings like above will show in browser console.
 
-![](https://os.alipayobjects.com/rmsportal/luLdLvhPOiRpyss.png)
+![console warning](https://os.alipayobjects.com/rmsportal/luLdLvhPOiRpyss.png)
 
 ```jsx
 // primary key is uid

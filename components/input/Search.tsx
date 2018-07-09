@@ -39,21 +39,39 @@ export default class Search extends React.Component<SearchProps, any> {
     this.input = node;
   }
 
-  render() {
-    const { className, prefixCls, inputPrefixCls, size, enterButton, suffix, ...others } = this.props;
-    delete (others as any).onSearch;
-    const buttonOrIcon = enterButton
-      ? (
+  getButtonOrIcon() {
+    const { enterButton, prefixCls, size, disabled } = this.props;
+    const enterButtonAsElement = enterButton as React.ReactElement<any>;
+    let node;
+    if (!enterButton) {
+      node = <Icon className={`${prefixCls}-icon`} type="search" key="searchIcon" />;
+    } else if (enterButtonAsElement.type === Button || enterButtonAsElement.type === 'button') {
+      node = React.cloneElement(enterButtonAsElement, enterButtonAsElement.type === Button ? {
+        className: `${prefixCls}-button`,
+        size,
+      } : {});
+    } else {
+      node = (
         <Button
           className={`${prefixCls}-button`}
           type="primary"
           size={size}
-          onClick={this.onSearch}
+          disabled={disabled}
           key="enterButton"
         >
           {enterButton === true ? <Icon type="search" /> : enterButton}
         </Button>
-      ) : <Icon className={`${prefixCls}-icon`} type="search" key="searchIcon" />;
+      );
+    }
+    return React.cloneElement(node, {
+      onClick: this.onSearch,
+    });
+  }
+
+  render() {
+    const { className, prefixCls, inputPrefixCls, size, suffix,  enterButton, ...others } = this.props;
+    delete (others as any).onSearch;
+    const buttonOrIcon = this.getButtonOrIcon();
     const searchSuffix = suffix ? [suffix, buttonOrIcon] : buttonOrIcon;
     const inputClassName = classNames(prefixCls, className, {
       [`${prefixCls}-enter-button`]: !!enterButton,

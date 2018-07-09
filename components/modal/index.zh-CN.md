@@ -25,6 +25,7 @@ title: Modal
 | destroyOnClose | 关闭时销毁 Modal 里的子元素 | boolean | false |
 | footer | 底部内容，当不需要默认底部按钮时，可以设为 `footer={null}` | string\|ReactNode | 确定取消按钮 |
 | getContainer | 指定 Modal 挂载的 HTML 节点 | (instance): HTMLElement | () => document.body |
+| keyboard | 是否支持键盘esc关闭 | boolean | true |
 | mask | 是否展示遮罩 | Boolean | true |
 | maskClosable | 点击蒙层是否允许关闭 | boolean | true |
 | maskStyle | 遮罩样式 | object | {} |

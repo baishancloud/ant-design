@@ -58,10 +58,10 @@
     top: 50%;
     right: @control-padding-horizontal - 1px;
     line-height: 1;
-    transform: translateY(-50%);
+    margin-top: -@font-size-sm / 2;
     transform-origin: 50% 50%;
     color: @disabled-color;
-    font-size: 12px;
+    font-size: @font-size-sm;
 
     * {
       display: none;
@@ -69,7 +69,7 @@
 
     &:before {
       content: '\e61d';
-      transition: transform 0.2s ease;
+      transition: transform .3s;
     }
   }
 
@@ -114,6 +114,10 @@
       max-width: 100%;
       padding-right: 20px;
     }
+  }
+
+  &-no-arrow &-selection-selected-value {
+    padding-right: 0;
   }
 
   &-disabled {
@@ -252,7 +256,7 @@
 
   &-search__field__mirror {
     position: absolute;
-    top: 0;
+    top: -9999px;
     left: -9999px;
     white-space: pre;
     pointer-events: none;
@@ -371,16 +375,17 @@
     }
   }
 
+  &-allow-clear &-selection--single &-selection-selected-value {
+    padding-right: 16px;
+  }
+
   &-allow-clear &-selection--multiple &-selection__rendered {
     margin-right: 20px; // In case that clear button will overlap content
   }
 
   &-open {
-    .@{select-prefix-cls}-arrow {
-      -ms-transform: rotate(180deg);
-      &:before {
-        transform: rotate(180deg);
-      }
+    .@{select-prefix-cls}-arrow:before {
+      transform: rotate(180deg);
     }
     .@{select-prefix-cls}-selection {
       .active();
@@ -448,7 +453,6 @@
   top: -9999px;
   position: absolute;
   outline: none;
-  overflow: hidden;
   font-size: @font-size-base;
 
   &-menu {
@@ -491,6 +495,14 @@
 
       &:hover {
         background-color: @item-hover-bg;
+      }
+
+      &:first-child {
+        border-radius: @border-radius-base @border-radius-base 0 0;
+      }
+
+      &:last-child {
+        border-radius: 0 0 @border-radius-base @border-radius-base;
       }
 
       &-disabled {

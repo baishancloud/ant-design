@@ -3,7 +3,7 @@ order: 3
 title: 项目实战
 ---
 
-在真实项目开发中，你可能会需要 Redux 或者 Mbox 这样的数据应用框架，Ant Design React 作为一个 UI 库，可以和任何 React 生态圈内的应用框架搭配使用。我们也基于 Redux 推出了自己的最佳实践 dva，推荐你在项目中使用。
+在真实项目开发中，你可能会需要 Redux 或者 MobX 这样的数据应用框架，Ant Design React 作为一个 UI 库，可以和任何 React 生态圈内的应用框架搭配使用。我们也基于 Redux 推出了自己的最佳实践 dva，推荐你在项目中使用。
 
 [dva](https://github.com/dvajs/dva) 是一个基于 React 和 Redux 的轻量应用框架，概念来自 elm，支持 side effects、热替换、动态加载、react-native、SSR 等，已在生产环境广泛应用。
 
@@ -66,12 +66,14 @@ $ npm install antd babel-plugin-import --save
 编辑 `.webpackrc`，使 `babel-plugin-import` 插件生效。
 
 ```diff
+{
 +  "extraBabelPlugins": [
 +    ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": "css" }]
-+  ],
++  ]
+}
 ```
 
-> 注：dva-cli 基于 roadhog 实现 build 和 dev，更多 `.roadhogrc` 的配置详见 [roadhog#配置](https://github.com/sorrycc/roadhog#配置)
+> 注：dva-cli 基于 roadhog 实现 build 和 dev，更多 `.webpackrc` 的配置详见 [roadhog#配置](https://github.com/sorrycc/roadhog#配置)
 
 ## 定义路由
 
@@ -151,8 +153,6 @@ dva 通过 model 的概念把一个领域的模型管理起来，包含同步更
 新建 model `models/products.js` ：
 
 ```javascript
-import dva from 'dva';
-
 export default {
   namespace: 'products',
   state: [],

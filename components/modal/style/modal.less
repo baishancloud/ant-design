@@ -91,6 +91,7 @@
     padding: 24px;
     font-size: @font-size-base;
     line-height: @line-height-base;
+    word-wrap: break-word;
   }
 
   &-footer {
@@ -133,7 +134,7 @@
   }
 }
 
-@media (max-width: @screen-md) {
+@media (max-width: @screen-sm-max) {
   .@{dialog-prefix-cls} {
     width: auto !important;
     margin: 10px;

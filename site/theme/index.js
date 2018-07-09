@@ -4,13 +4,14 @@ const path = require('path');
 const homeTmpl = './template/Home/index';
 const contentTmpl = './template/Content/index';
 const redirectTmpl = './template/Redirect';
+const appShellTmpl = './template/AppShell';
 
 function pickerGenerator(module) {
   const tester = new RegExp(`^docs/${module}`);
   return (markdownData) => {
     const { filename } = markdownData.meta;
-    if (tester.test(filename) &&
-        !/\/demo$/.test(path.dirname(filename))) {
+    if (tester.test(filename)
+        && !/\/demo$/.test(path.dirname(filename))) {
       return {
         meta: markdownData.meta,
       };
@@ -28,8 +29,8 @@ module.exports = {
   pick: {
     components(markdownData) {
       const { filename } = markdownData.meta;
-      if (!/^components/.test(filename) ||
-          /[/\\]demo$/.test(path.dirname(filename))) return;
+      if (!/^components/.test(filename)
+          || /[/\\]demo$/.test(path.dirname(filename))) return;
 
       return {
         meta: markdownData.meta,
@@ -58,6 +59,9 @@ module.exports = {
     component: './template/Layout/index',
     indexRoute: { component: homeTmpl },
     childRoutes: [{
+      path: 'app-shell',
+      component: appShellTmpl,
+    }, {
       path: 'index-cn',
       component: homeTmpl,
     }, {

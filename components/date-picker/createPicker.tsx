@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import omit from 'omit.js';
 import Icon from '../icon';
 import warning from '../_util/warning';
-import callMoment from '../_util/callMoment';
+import interopDefault from '../_util/interopDefault';
 
 export interface PickerProps {
   value?: moment.Moment;
@@ -26,7 +26,7 @@ export default function createPicker(TheCalendar: React.ComponentClass): any {
     constructor(props: any) {
       super(props);
       const value = props.value || props.defaultValue;
-      if (value && !moment.isMoment(value)) {
+      if (value && !interopDefault(moment).isMoment(value)) {
         throw new Error(
           'The value/defaultValue of DatePicker or MonthPicker must be ' +
           'a moment object after `antd@2.0`, see: https://u.ant.design/date-picker-value',
@@ -34,6 +34,7 @@ export default function createPicker(TheCalendar: React.ComponentClass): any {
       }
       this.state = {
         value,
+        showDate: value,
       };
     }
 
@@ -41,6 +42,7 @@ export default function createPicker(TheCalendar: React.ComponentClass): any {
       if ('value' in nextProps) {
         this.setState({
           value: nextProps.value,
+          showDate: nextProps.value,
         });
       }
     }
@@ -63,9 +65,16 @@ export default function createPicker(TheCalendar: React.ComponentClass): any {
     handleChange = (value: moment.Moment | null) => {
       const props = this.props;
       if (!('value' in props)) {
-        this.setState({ value });
+        this.setState({
+          value,
+          showDate: value,
+        });
       }
       props.onChange(value, (value && value.format(props.format)) || '');
+    }
+
+    handleCalendarChange = (value: moment.Moment) => {
+      this.setState({ showDate: value });
     }
 
     focus() {
@@ -81,7 +90,7 @@ export default function createPicker(TheCalendar: React.ComponentClass): any {
     }
 
     render() {
-      const { value } = this.state;
+      const { value, showDate } = this.state;
       const props = omit(this.props, ['onChange']);
       const { prefixCls, locale, localeCode } = props;
 
@@ -94,6 +103,10 @@ export default function createPicker(TheCalendar: React.ComponentClass): any {
         [`${prefixCls}-time`]: props.showTime,
         [`${prefixCls}-month`]: MonthCalendar === TheCalendar,
       });
+
+      if (value && localeCode) {
+        value.locale(localeCode);
+      }
 
       let pickerProps: Object = {};
       let calendarProps: any = {};
@@ -119,7 +132,7 @@ export default function createPicker(TheCalendar: React.ComponentClass): any {
           disabledTime={disabledTime}
           locale={locale.lang}
           timePicker={props.timePicker}
-          defaultValue={props.defaultPickerValue || callMoment(moment)}
+          defaultValue={props.defaultPickerValue || interopDefault(moment)()}
           dateInputPlaceholder={placeholder}
           prefixCls={prefixCls}
           className={calendarClassName}
@@ -130,6 +143,8 @@ export default function createPicker(TheCalendar: React.ComponentClass): any {
           monthCellContentRender={props.monthCellContentRender}
           renderFooter={this.renderFooter}
           onPanelChange={props.onPanelChange}
+          onChange={this.handleCalendarChange}
+          value={showDate}
         />
       );
 
@@ -156,12 +171,9 @@ export default function createPicker(TheCalendar: React.ComponentClass): any {
         </div>
       );
 
-      const pickerValue = value;
-      if (pickerValue && localeCode) {
-        pickerValue.locale(localeCode);
-      }
       return (
         <span
+          id={props.id}
           className={classNames(props.className, props.pickerClass)}
           style={props.style}
           onFocus={props.onFocus}
@@ -171,7 +183,7 @@ export default function createPicker(TheCalendar: React.ComponentClass): any {
             {...props}
             {...pickerProps}
             calendar={calendar}
-            value={pickerValue}
+            value={value}
             prefixCls={`${prefixCls}-picker-container`}
             style={props.popupStyle}
           >
