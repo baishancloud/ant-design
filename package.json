@@ -1,6 +1,6 @@
 {
-  "name": "antd",
-  "version": "3.6.5",
+  "name": "antd-bsc",
+  "version": "3.3.1",
   "title": "Ant Design",
   "description": "An enterprise-class UI design language and React-based implementation",
   "homepage": "http://ant.design/",
@@ -20,10 +20,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/ant-design/ant-design"
+    "url": "https://github.com/bsc-s2/ant-design-bsc"
   },
   "bugs": {
-    "url": "https://github.com/ant-design/ant-design/issues"
+    "url": "https://github.com/bsc-s2/ant-design-bsc/issues"
   },
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -204,23 +204,4 @@
     "lint-staged:es": "eslint ./.eslintrc.js ./webpack.config.js",
     "lint-staged:demo": "cross-env RUN_ENV=DEMO eslint --ext '.md'"
   },
-  "lint-staged": {
-    "components/**/*.tsx": [
-      "npm run lint-staged:ts"
-    ],
-    "{tests,site,scripts,components}/**/*.{js,jsx}": [
-      "npm run lint-staged:es"
-    ],
-    "{site,components}/**/*.less": "stylelint --syntax less",
-    "components/*/demo/*.md": [
-      "npm run lint-staged:demo"
-    ]
-  },
-  "pre-commit": [
-    "lint-staged"
-  ],
-  "sideEffects": [
-    "es/**/style/*",
-    "lib/**/style/*"
-  ]
 }
