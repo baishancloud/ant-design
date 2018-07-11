@@ -17,7 +17,7 @@ function addLocales(webpackConfig) {
   }
   webpackConfig.entry[packageName] = './index-with-locales.js';
   webpackConfig.output.filename = '[name].js';
-    // add svg support
+  // add svg support
   webpackConfig.module.rules.push({ test: /\.svg$/, loader: 'svg-inline-loader' });
 }
 
