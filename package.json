@@ -1,6 +1,6 @@
 {
-  "name": "antd-bsc",
-  "version": "3.3.1",
+  "name": "antd",
+  "version": "3.6.5",
   "title": "Ant Design",
   "description": "An enterprise-class UI design language and React-based implementation",
   "homepage": "http://ant.design/",
@@ -20,10 +20,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/bsc-s2/ant-design-bsc"
+    "url": "https://github.com/ant-design/ant-design"
   },
   "bugs": {
-    "url": "https://github.com/bsc-s2/ant-design-bsc/issues"
+    "url": "https://github.com/ant-design/ant-design/issues"
   },
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -136,7 +136,7 @@
     "majo": "^0.6.2",
     "mockdate": "^2.0.1",
     "moment-timezone": "^0.5.5",
-    "offline-plugin": "yesmeck/offline-plugin#fix-cache-key",
+    "offline-plugin": "github:yesmeck/offline-plugin#fix-cache-key",
     "pre-commit": "^1.2.2",
     "preact": "^8.2.5",
     "preact-compat": "^3.17.0",
@@ -174,7 +174,6 @@
     "xhr2": "^0.1.3"
   },
   "scripts": {
-    "test": "jest --config .jest.js",
     "test-node": "jest --config .jest.node.js",
     "test-all": "./scripts/test-all.sh",
     "lint": "npm run lint:ts && npm run lint:es && npm run lint:demo && npm run lint:style",
@@ -203,5 +202,5 @@
     "lint-staged:ts": "tsc && node node_modules/tslint/bin/tslint",
     "lint-staged:es": "eslint ./.eslintrc.js ./webpack.config.js",
     "lint-staged:demo": "cross-env RUN_ENV=DEMO eslint --ext '.md'"
-  },
+  }
 }
